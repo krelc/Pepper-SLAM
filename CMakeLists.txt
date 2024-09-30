@@ -30,6 +30,7 @@ ament_target_dependencies(pepper_teleop rclcpp geometry_msgs)
 install(TARGETS
   face_sub
   laser_data_transform
+  pepper_teleop
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch

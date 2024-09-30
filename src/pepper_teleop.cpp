@@ -10,7 +10,7 @@ public:
     TeleopPepper() : Node("teleop_pepper")
     {
         publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
-        std::cout << "Use WASD keys to control the robot. Press Q to quit." << std::endl;
+        std::cout << "Use WASD keys to control the robot, Press i to stop the robot. Press Q to quit." << std::endl;
     }
 
     void keyLoop()
@@ -54,6 +54,10 @@ public:
                 // Restore the terminal settings
                 tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
                 return;
+            case 'i':
+                twist.linear.x = 0.0;
+                twist.angular.z = 0.0;
+                break;
             default:
                 twist.linear.x = 0.0;
                 twist.angular.z = 0.0;
