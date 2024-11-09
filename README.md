@@ -1,6 +1,3 @@
-Using ROS2 to craete a SLAM algorithm on a Pepper robot.
-More will be added later.
-
 This repository contains the project and package that enables the use of the Pepper Robot and SLAM, using the SLAMTEC RPLidar A1M8.
 
 This package requires additional repositories, the first is the [naoqi2_driver](https://github.com/ros-naoqi/naoqi_driver2).
