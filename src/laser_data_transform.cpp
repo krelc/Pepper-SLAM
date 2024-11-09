@@ -14,17 +14,17 @@ public:
 
         // Increase the broadcast rate to 10 Hz
         timer_ = this->create_wall_timer(
-            std::chrono::milliseconds(100),
+            std::chrono::milliseconds(50),
             std::bind(&LaserDataTransform::broadcastTransform, this)
         );
 
         // Subscribe to the /scan topic
         scan_sub_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
-            "/scan", 10, std::bind(&LaserDataTransform::scanCallback, this, std::placeholders::_1)
+            "/scan", 100, std::bind(&LaserDataTransform::scanCallback, this, std::placeholders::_1)
         );
 
         // Publisher for the modified scan data
-        modified_scan_pub_ = this->create_publisher<sensor_msgs::msg::LaserScan>("/scan", 10);
+        modified_scan_pub_ = this->create_publisher<sensor_msgs::msg::LaserScan>("/scan", 100);
     }
 
 private:
@@ -46,29 +46,29 @@ private:
     }
 
     void scanCallback(const sensor_msgs::msg::LaserScan::SharedPtr msg) {
-        auto modified_scan = *msg;
+        // auto modified_scan = *msg;
 
-        // Calculate the angle range for the 120-degree cone
-        double angle_min = -60.0 * M_PI / 180.0; // -60 degrees in radians
-        double angle_max = 60.0 * M_PI / 180.0;  // 60 degrees in radians
+        // // Calculate the angle range for the 120-degree cone
+        // double angle_min = -60.0 * M_PI / 180.0; // -60 degrees in radians
+        // double angle_max = 60.0 * M_PI / 180.0;  // 60 degrees in radians
 
-        // Iterate through the scan data and filter out points outside the 120-degree cone
-        for (size_t i = 0; i < msg->ranges.size(); ++i) {
-            double angle = msg->angle_min + i * msg->angle_increment;
-            if (angle < angle_min || angle > angle_max) {
-                modified_scan.ranges[i] = std::numeric_limits<float>::infinity(); // Set to infinity to ignore
-            }
-        }
+        // // Iterate through the scan data and filter out points outside the 120-degree cone
+        // for (size_t i = 0; i < msg->ranges.size(); ++i) {
+        //     double angle = msg->angle_min + i * msg->angle_increment;
+        //     if (angle < angle_min || angle > angle_max) {
+        //         modified_scan.ranges[i] = std::numeric_limits<float>::infinity(); // Set to infinity to ignore
+        //     }
+        // }
 
-        // Ensure the modified scan has the same timestamp as the original scan
-        modified_scan.header.stamp = msg->header.stamp;
+        // // Ensure the modified scan has the same timestamp as the original scan
+        // modified_scan.header.stamp = msg->header.stamp;
 
-        // Log the timestamps for debugging
-        RCLCPP_INFO(this->get_logger(), "Scan timestamp: %f", msg->header.stamp.sec + msg->header.stamp.nanosec / 1e9);
-        RCLCPP_INFO(this->get_logger(), "Transform timestamp: %f", this->get_clock()->now().seconds());
+        // // Log the timestamps for debugging
+        // // RCLCPP_INFO(this->get_logger(), "Scan timestamp: %f", msg->header.stamp.sec + msg->header.stamp.nanosec / 1e9);
+        // // RCLCPP_INFO(this->get_logger(), "Transform timestamp: %f", this->get_clock()->now().seconds());
 
-        // Publish the modified scan data to the same topic
-        modified_scan_pub_->publish(modified_scan);
+        // // Publish the modified scan data to the same topic
+        // modified_scan_pub_->publish(modified_scan);
     }
 
     rclcpp::TimerBase::SharedPtr timer_;
