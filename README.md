@@ -17,3 +17,5 @@ When running the driver, using ros2 topic list should give a list of topics read
 The SLAMTEC RPLidar A1M8 is used, with the driver repository [SLAMTEC ROS2](https://github.com/Slamtec/sllidar_ros2).
 Ensure that the laser is enabled and can be run. 
 Once all the setup is complete, build and run this repository. Print the mount using the 3mf file and attach the A1M8 to it.
+
+You will need to build and install the [slam_toolbox](https://github.com/SteveMacenski/slam_toolbox).
